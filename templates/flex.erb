@@ -1,0 +1,29 @@
+<%
+   # Free-form, template-based settings are available
+   config_emojis = template_config["emojis"]
+
+%># InSpec Report
+
+Scanned on <%= scan_time.strftime('%Y-%m-%d') %>.
+
+Host: <%= sys_info.fqdn %>
+OS: <%= platform_name %> <%= platform[:release] %> (<%= platform_arch %>)
+
+Tests passed: <%= passed_tests %> (<%= format("%2.1f%%", percent_pass) %>)
+Tests failed: <%= failed_tests %> (<%= format("%2.1f%%", percent_fail) %>)
+
+<% profiles.each do |profile|
+
+%>## Profile `<%= profile.title %>`<%
+     profile.controls.each do |control| %>
+
+### Control `<%= control.title %>`
+
+<%= control.desc %>
+
+Results:
+<%     control.results.each do |result| %>
+- <%= result.code_desc %>: <%= result.status %><%= config_emojis ? (result.status == "passed" ? " :heavy_check_mark:" : " :red_circle:") : "" %><%
+       end # result %>
+<%   end # control %>
+<% end # profile %>
