@@ -8,9 +8,13 @@ module InspecPlugins::FlexReporter
     include InspecPlugins::FlexReporter::ErbHelpers
     include InspecPlugins::FlexReporter::FileResolver
 
+    ENV_PREFIX = "INSPEC_REPORTER_FLEX_".freeze
+
+    attr_writer :config, :env, :inspec_config, :logger
+
     # Render report
     def render
-      template_file = resolve_path(config["template"])
+      template_file = resolve_path(config["template_file"])
       template = ERB.new(File.read(template_file))
 
       # Use JSON Reporter base's `report` to have pre-processed data
@@ -58,10 +62,44 @@ module InspecPlugins::FlexReporter
 
       # Defaults
       @config = {
-        "template" => "templates/flex.erb",
+        "template_file" => "templates/flex.erb",
       }
 
-      @config.merge! Inspec::Config.cached.fetch_plugin_config("inspec-reporter-flex")
+      @config.merge! inspec_config.fetch_plugin_config("inspec-reporter-flex")
+      @config.merge! config_environment
+
+      logger.debug format("Configuration: %<config>s", config: @config)
+
+      @config
+    end
+
+    # Allow (top-level) setting overrides from environment.
+    #
+    # @return [Hash] Configuration data from environment
+    def config_environment
+      env_reporter = env.select { |var, _| var.start_with?(ENV_PREFIX) }
+      env_reporter.transform_keys { |key| key.delete_prefix(ENV_PREFIX).downcase }
+    end
+
+    # Return environment variables.
+    #
+    # @return [Hash] Mapping of environment variables
+    def env
+      @env ||= ENV
+    end
+
+    # Return InSpec Config object.
+    #
+    # @return [Inspec::Config] The InSpec config object
+    def inspec_config
+      @inspec_config ||= Inspec::Config.cached
+    end
+
+    # Return InSpec logger.
+    #
+    # @return [Inspec:Log] The Logger object
+    def logger
+      @logger ||= Inspec::Log
     end
 
     # Return InSpec Runner for further inspection.

@@ -4,7 +4,7 @@ module InspecPlugins::FlexReporter
     #
     # @param [String] name Name or path of a file to resolve
     # @return [String] Absolute path to the file, if any
-    # @raise [RuntimeError] if file not found
+    # @raise [IOError] if file not found
     def resolve_path(name)
       if absolute_path?(name)
         name
@@ -13,7 +13,7 @@ module InspecPlugins::FlexReporter
       elsif gem_path?(name)
         gem_path(name)
       else
-        raise "Template file #{name} not found"
+        raise IOError, "Template file #{name} not found"
       end
     end
 

@@ -1,6 +1,10 @@
 # Changelog
 
-## Unreleased
+## v0.1.1
+
+- Add configurability via environment variable
+- Fix documentation and reporter to use `template_file`
+- Refactor to allow better testing
 
 ## v0.1.0
 
