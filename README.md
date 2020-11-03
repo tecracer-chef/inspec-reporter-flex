@@ -35,7 +35,7 @@ For example:
   "version": "1.2",
   "plugins": {
     "inspec-reporter-flex": {
-      "template_file":"template/markdown.rb"
+      "template_file": "template/markdown.erb"
     }
   }
 }
@@ -43,9 +43,9 @@ For example:
 
 See below all customization options available:
 
-| Option           |        Default       |   Description  |
-|------------------|:--------------------:|:--------------:|
-| `template_file`  | `templates/flex.erb` |  Name of the file for templating. Will look up in order "absolute path", "relative to current directory", "relative to gem directory" |
+| Option           |              Env Variable            |        Default       |  Description  |
+|------------------|:------------------------------------:|:--------------------:|---------------|
+| `template_file`  | `INSPEC_REPORTER_FLEX_TEMPLATE_FILE` | `templates/flex.erb` | Name of the file for templating. Will look up in order "absolute path", "relative to current directory", "relative to gem directory" |
 
 ## Writing Templates
 
