@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.1.2
+
+- Fix lookup of `scan_time` ERB helper
+- Refactor template handling
+
 ## v0.1.1
 
 - Add configurability via environment variable

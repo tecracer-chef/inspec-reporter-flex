@@ -1,11 +1,11 @@
 module InspecPlugins::FlexReporter
   module FileResolver
-    # Resolve the absolute path for a file in order absolute path/gem bundled file/relative.
+    # Resolve the full path for a file in order absolute path/gem bundled file/relative.
     #
     # @param [String] name Name or path of a file to resolve
     # @return [String] Absolute path to the file, if any
     # @raise [IOError] if file not found
-    def resolve_path(name)
+    def full_path(name)
       if absolute_path?(name)
         name
       elsif relative_path?(name)
