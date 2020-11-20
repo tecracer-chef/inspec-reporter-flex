@@ -1,10 +1,12 @@
 module InspecPlugins::FlexReporter
   module ErbHelpers
-    # Return latest start time of the scan
+    # Return approximate time of the scan
     #
-    # @return [DateTime] Timestamp of the last scan in the profile
+    # @return [DateTime] Timestamp of the first scan in the profile
     def scan_time
-      DateTime.strptime(report[:profiles].last[:controls].last[:results].last[:start_time])
+      scan_time = report[:profiles].detect { |p| p[:controls].detect { |c| c[:results].detect { |r| !r.empty? } } }.dig(:controls, 0, :results, 0, :start_time)
+
+      DateTime.strptime(scan_time)
     end
 
     # Execute a remote command.

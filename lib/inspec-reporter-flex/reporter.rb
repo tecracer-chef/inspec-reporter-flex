@@ -10,12 +10,11 @@ module InspecPlugins::FlexReporter
 
     ENV_PREFIX = "INSPEC_REPORTER_FLEX_".freeze
 
-    attr_writer :config, :env, :inspec_config, :logger
+    attr_writer :config, :env, :inspec_config, :logger, :template_contents
 
     # Render report
     def render
-      template_file = resolve_path(config["template_file"])
-      template = ERB.new(File.read(template_file))
+      template = ERB.new(template_contents)
 
       # Use JSON Reporter base's `report` to have pre-processed data
       mushy_report = Hashie::Mash.new(report)
@@ -53,6 +52,14 @@ module InspecPlugins::FlexReporter
     end
 
     private
+
+    # Read contents of requested template.
+    #
+    # @return [String] ERB Template
+    # @raise [IOError]
+    def template_contents
+      @template_contents ||= File.read full_path(config["template_file"])
+    end
 
     # Initialize configuration with defaults and Plugin config.
     #
