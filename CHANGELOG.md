@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.3
+
+- Fix absolute path detection to check for existence of `template_file`
+
 ## v0.1.2
 
 - Fix lookup of `scan_time` ERB helper
