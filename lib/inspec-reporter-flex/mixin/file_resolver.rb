@@ -22,7 +22,23 @@ module InspecPlugins::FlexReporter
     # @param [String] name name or path of a file
     # @return [Boolean] if it is an absolute path
     def absolute_path?(name)
-      name.start_with? "/"
+      absolute_unix_path?(name) || absolute_windows_path?(name)
+    end
+
+    # Is this an absolute path on UNIX systems?
+    #
+    # @param [String] name name or path of a file
+    # @return [Boolean] if it is an absolute path
+    def absolute_unix_path?(name)
+      File.exist?(name) && name.start_with?("/")
+    end
+
+    # Is this an absolute path on Windows systems?
+    #
+    # @param [String] name name or path of a file
+    # @return [Boolean] if it is an absolute path
+    def absolute_windows_path?(name)
+      File.exist?(name) && name.match?(/^[a-zA-C]:/)
     end
 
     # Is this an relative path?
